@@ -1,0 +1,170 @@
+{
+  "release": "0.1.5-beta",
+  "gameplay_tested_revision": "0.1.4",
+  "source": "User supplied two feature-list screenshots: checked features passed except the red box. In a follow-up the user requested feature 21 be marked pending; other unchecked features are also pending.",
+  "passed": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    22
+  ],
+  "pending": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    20,
+    21,
+    23,
+    24,
+    25,
+    26
+  ],
+  "features": [
+    {
+      "id": 1,
+      "name": "无限生命",
+      "status": "passed"
+    },
+    {
+      "id": 2,
+      "name": "无消耗",
+      "status": "passed"
+    },
+    {
+      "id": 3,
+      "name": "一击即死",
+      "status": "passed"
+    },
+    {
+      "id": 4,
+      "name": "暴君无法复活",
+      "status": "passed"
+    },
+    {
+      "id": 5,
+      "name": "无后坐力",
+      "status": "passed"
+    },
+    {
+      "id": 6,
+      "name": "超级精准度",
+      "status": "passed"
+    },
+    {
+      "id": 7,
+      "name": "包裹格数",
+      "status": "passed"
+    },
+    {
+      "id": 8,
+      "name": "可交互提示距离",
+      "status": "pending"
+    },
+    {
+      "id": 9,
+      "name": "游戏时间",
+      "status": "pending"
+    },
+    {
+      "id": 10,
+      "name": "存档次数",
+      "status": "pending"
+    },
+    {
+      "id": 11,
+      "name": "开箱次数",
+      "status": "pending"
+    },
+    {
+      "id": 12,
+      "name": "治疗次数",
+      "status": "pending"
+    },
+    {
+      "id": 13,
+      "name": "走动步数",
+      "status": "pending"
+    },
+    {
+      "id": 14,
+      "name": "移动速度",
+      "status": "passed"
+    },
+    {
+      "id": 15,
+      "name": "瞬移&穿墙",
+      "status": "passed"
+    },
+    {
+      "id": 16,
+      "name": "视角距离",
+      "status": "passed"
+    },
+    {
+      "id": 17,
+      "name": "湿身效果",
+      "status": "passed"
+    },
+    {
+      "id": 18,
+      "name": "极速开枪",
+      "status": "passed"
+    },
+    {
+      "id": 19,
+      "name": "无敌",
+      "status": "passed"
+    },
+    {
+      "id": 20,
+      "name": "动态难度(分数)",
+      "status": "pending"
+    },
+    {
+      "id": 21,
+      "name": "真隐身模式",
+      "status": "pending"
+    },
+    {
+      "id": 22,
+      "name": "人物大小修改",
+      "status": "passed"
+    },
+    {
+      "id": 23,
+      "name": "免疫中毒",
+      "status": "pending"
+    },
+    {
+      "id": 24,
+      "name": "混合药草增益状态",
+      "status": "pending"
+    },
+    {
+      "id": 25,
+      "name": "艾达秒入侵",
+      "status": "pending"
+    },
+    {
+      "id": 26,
+      "name": "锁定倒计时",
+      "status": "pending"
+    }
+  ],
+  "pending_note": "Feature 21 requires further gameplay verification. Earlier observation: an already-alerted Tyrant continued pursuit/attack. No new invisibility fix is claimed in this release.",
+  "scope": "Feature-level gameplay acceptance; each visible suboption was not separately certified. Lua 0.1.5 changes persistence and UI, while the tested native helper remains unchanged.",
+  "earlier_coordinate_acceptance": "User confirmed no saved-position drift and original rise/fall distance."
+}

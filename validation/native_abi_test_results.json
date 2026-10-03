@@ -1,0 +1,1 @@
+{"revision":"0.1.4","passed":6,"native_version":4,"checks":["uppercase RE2 and API 1.10","plugin initialization ABI","pre and post UpdateScene registration","absent player","incompatible image guard","status JSON version 4"]}

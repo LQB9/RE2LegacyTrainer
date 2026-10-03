@@ -1,0 +1,134 @@
+{
+  "cheats": [
+    {
+      "id": 1,
+      "label": "无限生命",
+      "label2": "Infinte Health"
+    },
+    {
+      "id": 2,
+      "label": "无消耗",
+      "label2": "Items Not Reduced"
+    },
+    {
+      "id": 3,
+      "label": "一击即死",
+      "label2": "One Hit Kill"
+    },
+    {
+      "id": 4,
+      "label": "暴君无法复活",
+      "label2": "Tyrant Can't Revive"
+    },
+    {
+      "id": 5,
+      "label": "无后坐力",
+      "label2": "No Recoil"
+    },
+    {
+      "id": 6,
+      "label": "超级精准度",
+      "label2": "Fast Weapon Accuracy"
+    },
+    {
+      "id": 7,
+      "label": "包裹格数",
+      "label2": "Backpack Size"
+    },
+    {
+      "id": 8,
+      "label": "可交互提示距离",
+      "label2": "Highilght Item Tip Distance"
+    },
+    {
+      "id": 9,
+      "label": "游戏时间",
+      "label2": "Play Time"
+    },
+    {
+      "id": 10,
+      "label": "存档次数",
+      "label2": "Save Counter"
+    },
+    {
+      "id": 11,
+      "label": "开箱次数",
+      "label2": "Box Open Counter"
+    },
+    {
+      "id": 12,
+      "label": "治疗次数",
+      "label2": "Recovery Item Used Counter"
+    },
+    {
+      "id": 13,
+      "label": "走动步数",
+      "label2": "Step Counter"
+    },
+    {
+      "id": 14,
+      "label": "移动速度",
+      "label2": "Move Speed"
+    },
+    {
+      "id": 15,
+      "label": "瞬移&穿墙",
+      "label2": "Teleport & Through Wall"
+    },
+    {
+      "id": 16,
+      "label": "视角距离",
+      "label2": "FOV Distance"
+    },
+    {
+      "id": 17,
+      "label": "湿身效果",
+      "label2": "Wet Body"
+    },
+    {
+      "id": 18,
+      "label": "极速开枪",
+      "label2": "No Firing Delay"
+    },
+    {
+      "id": 19,
+      "label": "无敌",
+      "label2": "Invulnerable"
+    },
+    {
+      "id": 20,
+      "label": "动态难度(分数)",
+      "label2": "Score"
+    },
+    {
+      "id": 21,
+      "label": "真隐身模式",
+      "label2": "Zombies Don't Attack"
+    },
+    {
+      "id": 22,
+      "label": "人物大小修改",
+      "label2": "Player Model Size"
+    },
+    {
+      "id": 23,
+      "label": "免疫中毒",
+      "label2": "Immune Poisoning"
+    },
+    {
+      "id": 24,
+      "label": "混合药草增益状态",
+      "label2": "Mixed Herbs Buffer"
+    },
+    {
+      "id": 25,
+      "label": "艾达秒入侵",
+      "label2": "Ada Instant Hacking"
+    },
+    {
+      "id": 26,
+      "label": "锁定倒计时",
+      "label2": "Freeze Countdown Timer"
+    }
+  ]
+}

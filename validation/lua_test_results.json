@@ -1,0 +1,30 @@
+{
+  "passed": 25,
+  "tests": [
+    "all 26 effects disabled and listed once in the original order",
+    "source EXE labels and local original default shortcuts match all 26 rows",
+    "selected options retain all original visible parameters without a height-distance control",
+    "original shortcuts distinguish left and right modifiers and debounce toggles",
+    "managed runtime fixture",
+    "health and one hit kill discriminate player and enemy",
+    "items allow increases and preserve consumption return value",
+    "Tyrant sleep and recoil are conditional",
+    "accuracy and firing delay restore temporary animation data",
+    "backpack, four statistics and game clock use named fields",
+    "invulnerability, invisibility and rank fixing restore flags",
+    "poison setter and wet material state restore original values",
+    "camera distance, smooth height and aim reset preserve shared params",
+    "Ada hack fills capacity and countdown retains prior frame",
+    "four action bindings are captured, named and persisted without firing",
+    "action shortcuts trigger once per press and require enabled, ready player",
+    "combination binding replaces only the matching chord and ignores held keys",
+    "Escape cancels binding, Backspace clears it, and reload retains shortcuts",
+    "all saved switches and shortcuts survive reload without replaying coordinate commands",
+    "remembered one hit kill leaves damage unchanged until the current player is known",
+    "script reset disables all native and managed controls",
+    "reload after script teardown restores the saved selections and parameters",
+    "reload tolerates malformed settings and ignores stale enable commands",
+    "closing the trainer panel balances the installed Begin/End binding",
+    "scrollbar styles remain scoped and project button copies the public repository URL"
+  ]
+}

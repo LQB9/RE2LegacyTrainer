@@ -1,0 +1,1 @@
+{"revision":"0.1.4","passed":6,"tests":["save and load with 16 frames of residual motion","original 0.1 times 16 rise and fall at large heights","queued presses, reversal and horizontal movement","cancel on events and disable","config distance, counters and legacy compatibility","SDK invocation failure guard"]}

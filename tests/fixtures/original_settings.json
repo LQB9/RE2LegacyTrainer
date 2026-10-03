@@ -1,0 +1,262 @@
+[
+  {
+    "Id": 1,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 4,
+      "KeyCode": 97,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 2,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 4,
+      "KeyCode": 98,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 3,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 4,
+      "KeyCode": 99,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 4,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 4,
+      "KeyCode": 100,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 5,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 4,
+      "KeyCode": 101,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 6,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 4,
+      "KeyCode": 102,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 7,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 4,
+      "KeyCode": 103,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 8,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 4,
+      "KeyCode": 104,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 9,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 4,
+      "KeyCode": 105,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 10,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 4,
+      "KeyCode": 96,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 11,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 64,
+      "KeyCode": 97,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 12,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 64,
+      "KeyCode": 98,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 13,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 64,
+      "KeyCode": 99,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 14,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 64,
+      "KeyCode": 100,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 15,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 64,
+      "KeyCode": 101,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 16,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 64,
+      "KeyCode": 102,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 17,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 64,
+      "KeyCode": 103,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 18,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 64,
+      "KeyCode": 104,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 19,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 64,
+      "KeyCode": 105,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 20,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 64,
+      "KeyCode": 96,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 21,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 1,
+      "KeyCode": 97,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 22,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 1,
+      "KeyCode": 98,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 23,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 1,
+      "KeyCode": 99,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 24,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 1,
+      "KeyCode": 100,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 25,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 1,
+      "KeyCode": 101,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  },
+  {
+    "Id": 26,
+    "SetIndex": 0,
+    "KeyConfig": {
+      "ModifierKeys": 1,
+      "KeyCode": 102,
+      "ScanCode": 0,
+      "Type": 0
+    }
+  }
+]

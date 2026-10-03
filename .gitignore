@@ -1,0 +1,9 @@
+build/
+__pycache__/
+.venv/
+*.pyc
+*.zip
+*.dmp
+*.log
+reframework/data/
+reframework/fonts/
