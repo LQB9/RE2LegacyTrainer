@@ -36,7 +36,7 @@
     "docs/screenshots/more-features.png": "a4a420d183d6aadd0a7fcd5409f4d8e6e1aa70152e3c237b06c30d4c726aaaba",
     "Install.ps1": "f479bc0155b2c0e0766d1e18684bbf595430ba6756e34caf2f4e575173febd40",
     "licenses/REFramework-MIT.txt": "7124c298a1fe76b169db561ee640101f88f573f21d1f269b34817b9538321f5f",
-    "README.md": "06103ec34fbbbb135027684c889c5bf6b033490600e3883a1b93f106adb93a85",
+    "README.md": "caa37e395e9098a92ae88770344151ef6dea5901ea63b28bc165ac15db3e6d5b",
     "reframework/autorun/re2_legacy_trainer.lua": "ad7a328afc96c289c3c4ee54a43be085f2954107f467084544fa204e5bb7cd46",
     "reframework/plugins/re2_legacy_native.dll": "7eb1144ecb2efcb17a0432bfa789ece6cd10f0f058561744d8a82ef74e535751",
     "src/include/MinHook.h": "e34bbf7b855c842694f6e3dd78e2d280e99ed9732501e3dc1532a8626a8db8e5",
@@ -66,5 +66,6 @@
     "validation/lua_test_results.json": "71d3dc96a5b4a041dcbcc42557d075a8b62a16c3185e320c3522dbfc81f5c340",
     "validation/native_abi_test_results.json": "faa0da216c37b32b1bf705f5bf02b0a6311bb29a507cf884c66ed27877e1fc1c",
     "validation/native_action_test_results.json": "21e9c39b28c0ab4c5c48df77547d1e58c28d0c33f3d80883ae9f7f64dce43a45"
-  }
+  },
+  "documentation_revision": "docs1"
 }
