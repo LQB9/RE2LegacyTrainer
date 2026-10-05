@@ -1,14 +1,14 @@
 {
-  "version": "0.1.5-beta",
+  "version": "0.1.6-beta",
   "project_url": "https://github.com/LQB9/RE2LegacyTrainer",
-  "function_count": 26,
-  "native_helper_revision": "0.1.4; status API 4; unchanged tested binary",
+  "function_count": 28,
+  "native_helper_revision": "0.1.6; status API 5",
   "tdb_version": 70,
   "build_id": 11636119,
   "game_sha256": "6CAAA815BF9E95F8A841BC81FDF29FEC55E836C87BAB8A76D55C69BEF9ADA941",
   "gameplay_acceptance": {
-    "passed": 14,
-    "pending": 12,
+    "passed": 15,
+    "pending": 13,
     "pending_ids": [
       8,
       9,
@@ -21,12 +21,13 @@
       23,
       24,
       25,
-      26
+      26,
+      27
     ]
   },
   "automated_checks": {
-    "lua": 25,
-    "native_actions": 6,
+    "lua": 47,
+    "native_actions": 11,
     "native_abi": 6
   },
   "files": {
@@ -36,9 +37,9 @@
     "docs/screenshots/more-features.png": "a4a420d183d6aadd0a7fcd5409f4d8e6e1aa70152e3c237b06c30d4c726aaaba",
     "Install.ps1": "f479bc0155b2c0e0766d1e18684bbf595430ba6756e34caf2f4e575173febd40",
     "licenses/REFramework-MIT.txt": "7124c298a1fe76b169db561ee640101f88f573f21d1f269b34817b9538321f5f",
-    "README.md": "caa37e395e9098a92ae88770344151ef6dea5901ea63b28bc165ac15db3e6d5b",
-    "reframework/autorun/re2_legacy_trainer.lua": "ad7a328afc96c289c3c4ee54a43be085f2954107f467084544fa204e5bb7cd46",
-    "reframework/plugins/re2_legacy_native.dll": "7eb1144ecb2efcb17a0432bfa789ece6cd10f0f058561744d8a82ef74e535751",
+    "README.md": "782569cd39ec8fe201b518b8a2801a06b3767694d7aaad2220f67c5eb779e4d1",
+    "reframework/autorun/re2_legacy_trainer.lua": "4718958a602e97c00ad877f317417faa3de612a76055d61dd15f09798a74c3fc",
+    "reframework/plugins/re2_legacy_native.dll": "7ffa1013d8f82719898118ea542cd1173b495d6ebaf956dee0a15f382955cf3d",
     "src/include/MinHook.h": "e34bbf7b855c842694f6e3dd78e2d280e99ed9732501e3dc1532a8626a8db8e5",
     "src/minhook/buffer.c": "75a789eb718bd5ed2de039ccd330736a31d0a2d14e43d8e15e6cd2332432482d",
     "src/minhook/buffer.h": "9769702bd625249e59a19ede05c84365fcc7707e1fa0e5df08df42227cee13e3",
@@ -52,20 +53,19 @@
     "src/minhook/trampoline.h": "27426751dde36cdd8346469e61cdcca47950b1056a69f21cc63f4b41743faf6a",
     "src/MinHook.h": "e34bbf7b855c842694f6e3dd78e2d280e99ed9732501e3dc1532a8626a8db8e5",
     "src/native_generated.h": "c90badb3e511ee804ef21688bf1e400b2c388a3f0d2b7e59bbf986d9e8496bea",
-    "src/re2_legacy_native.c": "a39c0afb8f40fc89c8c05e5f6aea6fe0a72a6bf6b55ba419714a59045a6159b9",
-    "src/re2_legacy_trainer.lua": "ad7a328afc96c289c3c4ee54a43be085f2954107f467084544fa204e5bb7cd46",
+    "src/re2_legacy_native.c": "740dba93a563e4df02ba3176e3c93dfedb89eb975ab5854de05331a149ab7b4f",
+    "src/re2_legacy_trainer.lua": "4718958a602e97c00ad877f317417faa3de612a76055d61dd15f09798a74c3fc",
     "src/REFramework_API.h": "7ecbd696cb89cb9b87db7afe7cfdaa564fed8062a25e02eb2db2600ff81173bc",
     "tests/fixtures/original_features.json": "a7277e99368cd73382cee18d4a5e74cf1c98c896ce0ffd74f4a7687f45677403",
     "tests/fixtures/original_settings.json": "a231cb316f48d3a5e4f7fa9305afa905e70292ba2bb1cb69b5f5aa15b0aab6b7",
     "tests/requirements.txt": "3431e76f636564b13621a6b7d63e8d1ae42bca3c0eae871dc006ca211df06d65",
-    "tests/test_native_abi.c": "0dfbd3443483bf0850caa4bb669614abca4788284102993c0e551ac4662ca7a7",
-    "tests/test_native_actions.c": "5dbbe80a0a66dcb55e776fde73597cf5a90b20e018aad9596770d6cae0b6e95c",
-    "tests/test_plugin.py": "6c04499f5531f0146c035185456a9cec873ae48c1ce349c156dd1f74f537de6f",
-    "THIRD_PARTY_NOTICES.md": "75785eeb5114bc40fec877aeb7c161302d150855de13078a9d27ec4212c41047",
-    "validation/gameplay_acceptance.json": "cb832fcee767cd7d92c0fc1cba19a772ab6cab89c7807a090c2fe33620cc58e3",
-    "validation/lua_test_results.json": "71d3dc96a5b4a041dcbcc42557d075a8b62a16c3185e320c3522dbfc81f5c340",
-    "validation/native_abi_test_results.json": "faa0da216c37b32b1bf705f5bf02b0a6311bb29a507cf884c66ed27877e1fc1c",
-    "validation/native_action_test_results.json": "21e9c39b28c0ab4c5c48df77547d1e58c28d0c33f3d80883ae9f7f64dce43a45"
-  },
-  "documentation_revision": "docs1"
+    "tests/test_native_abi.c": "fd8bc036bcee429b85095e58f9f23969e518f0ddec7b465d8d4e60fdb4cc01fc",
+    "tests/test_native_actions.c": "6266a694f84448fac5dd763969dbe01753322e6fb11d42903dff81b572801da5",
+    "tests/test_plugin.py": "6b84de5214d77dc0c9e38189d6a63f10c3b73cd36e7f6f331e05782f8e75c613",
+    "THIRD_PARTY_NOTICES.md": "e89ebabc168919106cdcf06cb8768de3384ee49efd45fcf1c40e2b4ae4ff2ef0",
+    "validation/gameplay_acceptance.json": "76818efa7557945dad84adf4e824f80889b6e572e1bd0c24c80e29603c6148cc",
+    "validation/lua_test_results.json": "9366d37a38863ba2a552ecc8bba2dc80d2dcf5fcb742f2092781c529028d02d6",
+    "validation/native_abi_test_results.json": "947df90937efbf784dfe202320c20c2b4054960479e8dcd478a7ff53904b4ba9",
+    "validation/native_action_test_results.json": "256ef2e451085c92af50799b0888d2b2051bb11be9324a2383597a024d83a1cf"
+  }
 }

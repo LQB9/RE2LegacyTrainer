@@ -25,10 +25,10 @@ int main(void) {
  if(!initialize(&api)||!frame||!post_frame)return 4;
  frame();post_frame();FILE* f=fopen("reframework/data/re2_legacy_native_status.json","rb");if(!f)return 5;
  char json[4096]={0};fread(json,1,sizeof(json)-1,f);fclose(f);
- if(!strstr(json,"\"version\":4")||!strstr(json,"\"player_ready\":false")||!strstr(json,"game image does not contain this hook site"))return 6;
+ if(!strstr(json,"\"version\":5")||!strstr(json,"\"player_ready\":false")||!strstr(json,"game image does not contain this hook site"))return 6;
  if(!strstr(json,"\"ready\":false,\"enabled\":false"))return 7;
  puts("PASS required version, initialize ABI, callback registration, absent player, incompatible image guard, status JSON");
  FILE* report=fopen("native_abi_test_results.json","wb");if(!report)return 8;
- fputs("{\"revision\":\"0.1.4\",\"passed\":6,\"native_version\":4,\"checks\":[\"uppercase RE2 and API 1.10\",\"plugin initialization ABI\",\"pre and post UpdateScene registration\",\"absent player\",\"incompatible image guard\",\"status JSON version 4\"]}",report);fclose(report);
+ fputs("{\"revision\":\"0.1.6\",\"passed\":6,\"native_version\":5,\"checks\":[\"uppercase RE2 and API 1.10\",\"plugin initialization ABI\",\"pre and post UpdateScene registration\",\"absent player\",\"incompatible image guard\",\"status JSON version 5\"]}",report);fclose(report);
  return 0;
 }

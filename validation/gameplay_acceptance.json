@@ -1,7 +1,21 @@
 {
-  "release": "0.1.5-beta",
+  "release": "0.1.6-beta",
   "gameplay_tested_revision": "0.1.4",
-  "source": "User supplied two feature-list screenshots: checked features passed except the red box. In a follow-up the user requested feature 21 be marked pending; other unchecked features are also pending.",
+  "source": "Original feature acceptance comes from user screenshots and follow-ups. New feature acceptance comes from explicit user feedback on the installed 0.1.6 candidate.",
+  "extensions": {
+    "27": {
+      "status": "pending",
+      "revision": "0.1.6 synchronized survivor teleport candidate",
+      "evidence": "The user confirmed an obstacle still prevents teleport and changes altitude. The candidate now uses RE2 SurvivorCondition.setPosition, which updates Transform and synchronizes registered physics controllers, following the RE4 core flow. Legacy collision hooks are suspended during this call and restored afterwards. Mouse double-release controls, matching action/binding rows, and direct hit height are preserved. Updated DLL gameplay test is pending.",
+      "ui_revision": "Camera teleport removed; aim and return use directly visible grouped bindings. All toggle hotkeys start unbound; Backspace is assignable with explicit Clear buttons. Await user verification of the keyboard revision."
+    },
+    "28": {
+      "status": "passed",
+      "revision": "0.1.6",
+      "evidence": "User confirmed: enemy freeze works. Acceptance is feature-level; different enemy types and every subcase are not separately certified.",
+      "mouse_binding": "Keyboard/mouse selector and five single-release mouse toggle bindings added. Automated persistence, duplicate binding, input blocking and exact scale restore checks passed; mouse gameplay confirmation pending."
+    }
+  },
   "passed": [
     1,
     2,
@@ -16,7 +30,8 @@
     17,
     18,
     19,
-    22
+    22,
+    28
   ],
   "pending": [
     8,
@@ -30,7 +45,8 @@
     23,
     24,
     25,
-    26
+    26,
+    27
   ],
   "features": [
     {
@@ -162,9 +178,25 @@
       "id": 26,
       "name": "锁定倒计时",
       "status": "pending"
+    },
+    {
+      "id": 27,
+      "name": "飞雷神",
+      "status": "pending"
+    },
+    {
+      "id": 28,
+      "name": "敌人冻结",
+      "status": "passed"
     }
   ],
-  "pending_note": "Feature 21 requires further gameplay verification. Earlier observation: an already-alerted Tyrant continued pursuit/attack. No new invisibility fix is claimed in this release.",
-  "scope": "Feature-level gameplay acceptance; each visible suboption was not separately certified. Lua 0.1.5 changes persistence and UI, while the tested native helper remains unchanged.",
+  "invisibility": {
+    "revision": "0.1.6 candidate; target-loss repair",
+    "ordinary_zombies": "passed",
+    "tyrant": "pending",
+    "evidence": "After installing the repair, user answered '可以了' to a test asking whether ordinary zombies stop chasing/attacking with stealth enabled and resume detection with stealth disabled, with enemy freeze disabled. Live diagnostics confirmed target loss and blocked detection/noise/hate requests."
+  },
+  "pending_note": "Feature 21 target-loss repair passed the ordinary zombie on/off gameplay test. Tyrant behavior has not been retested since this repair and remains pending; feature 21 is not certified for all enemy types.",
+  "scope": "Feature-level gameplay acceptance; each visible suboption was not separately certified. Original 26 full-feature acceptance remains from 0.1.4. See invisibility for the ordinary zombie repair acceptance and extensions for features 27/28. Lua and native helper are updated in 0.1.6.",
   "earlier_coordinate_acceptance": "User confirmed no saved-position drift and original rise/fall distance."
 }

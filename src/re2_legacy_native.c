@@ -30,6 +30,20 @@ static float teleport_load_position[4];
 static double teleport_y,teleport_target_y;
 static float teleport_amount=1.6f;
 static REFrameworkMethodHandle transform_set_position;
+static REFrameworkMethodHandle transform_get_world_position,survivor_set_position;
+static void* current_condition;
+static int legacy15_requested,flight_enabled,flight_pending,flight_active,flight_step,flight_steps,flight_settle,flight_local,flight_saved;
+static unsigned flight_sequence;
+static uintptr_t flight_transform,flight_saved_transform;
+static float flight_target[4],flight_start[4],flight_return[4];
+static int flight_interpolate;
+static const char* flight_error="";
+static Group* group(int id);
+static void cancel_flight(int clear_saved) {
+    flight_pending=flight_active=flight_step=flight_settle=0;
+    if(clear_saved){flight_saved=0;flight_saved_transform=0;}
+}
+static int flight_ready(void) {return transform_set_position&&transform_get_world_position&&survivor_set_position;}
 
 static int readable(const void* p,size_t n) {
     MEMORY_BASIC_INFORMATION m;
@@ -47,7 +61,7 @@ static void* field(void* object,const char* name) {
     return NULL;
 }
 static void capture_player(void) {
-    uintptr_t hp=0,transform=0;*player_state=0;*event_state=0;
+    uintptr_t hp=0,transform=0;*player_state=0;*event_state=0;current_condition=NULL;
     void* pm=api->sdk->functions->get_managed_singleton("app.ropeway.PlayerManager");
     if(pm) {
         REFrameworkTDBHandle tdb=api->sdk->functions->get_tdb();
@@ -55,6 +69,7 @@ static void capture_player(void) {
         unsigned char out[136]={0};
         if(method&&api->sdk->method->invoke(method,pm,NULL,0,out,sizeof(out))==REFRAMEWORK_ERROR_NONE&&!out[128]) {
             void* condition=*(void**)out;
+            current_condition=condition;
             void* f=field(condition,"<HitPointController>k__BackingField");
             if(f)hp=readptr((uintptr_t)f);
             uintptr_t game_object=readptr(hp+0x10);
@@ -143,12 +158,27 @@ static void poll_config(void) {
     int fresh=GetFileAttributesExW(config_path,GetFileExInfoStandard,&attr);
     uint64_t modified=fresh?((uint64_t)attr.ftLastWriteTime.dwHighDateTime<<32)|attr.ftLastWriteTime.dwLowDateTime:0;
     fresh=fresh&&current>=modified&&current-modified<50000000;
-    if(!fresh){for(int i=0;i<4;i++)enable(&groups[i],0);return;}
+    if(!fresh){cancel_flight(1);legacy15_requested=flight_enabled=0;for(int i=0;i<4;i++)enable(&groups[i],0);return;}
     if(CompareFileTime(&last_file,&attr.ftLastWriteTime)==0)return;
     char json[4096]={0};FILE* f=_wfopen(config_path,L"rb");if(!f)return;
     size_t n=fread(json,1,sizeof(json)-1,f);fclose(f);if(!n||!strchr(json,'}'))return;
     last_file=attr.ftLastWriteTime;
     Group* g8=group(8);Group* g14=group(14);Group* g15=group(15);Group* g22=group(22);
+    legacy15_requested=number(json,"f15",0)!=0;
+    flight_enabled=number(json,"f27",0)!=0;
+    unsigned flight_seq=(unsigned)bounded(json,"fly27_seq",0,0,1000000000);
+    if(!flight_enabled||flight_seq<flight_sequence)cancel_flight(1);
+    if(flight_seq>flight_sequence&&flight_enabled&&flight_ready()) {
+        int kind=(int)number(json,"fly27_kind",0);
+        cancel_flight(0);flight_error="";
+        if(kind==1||kind==2) {
+            flight_pending=kind;flight_interpolate=number(json,"fly27_interp",1)!=0;
+            const char* xyz[]={"fly27_x","fly27_y","fly27_z"};
+            for(int i=0;i<3;i++)flight_target[i]=bounded(json,xyz[i],0,-100000,100000);
+            flight_target[3]=0;
+        }
+    }
+    flight_sequence=flight_seq;
     set_float(g8,0,bounded(json,"v8",15,1,50));set_float(g14,0,bounded(json,"v14",2,.5f,5));
     set_float(g22,0,bounded(json,"v22",1,.1f,5));if(g22->ready)g22->cave[4]=number(json,"vol22",0)!=0;
     if(g15->ready) {
@@ -160,7 +190,8 @@ static void poll_config(void) {
         const char* keys[]={"save15","load15","up15","down15"};
         for(int i=0;i<4;i++) {
             unsigned seq=(unsigned)number(json,keys[i],0);
-            if(seq>commands[i]&&number(json,"f15",0)!=0) {
+            if(seq>commands[i]&&legacy15_requested) {
+                cancel_flight(0);
                 unsigned count=seq-commands[i];
                 teleport_pending[i]+=count<32?count:32;
             }
@@ -170,7 +201,9 @@ static void poll_config(void) {
         // coordinate actions after UpdateScene, after the current engine's ground fix.
         memset(g15->cave+17,0,4);memset(g15->cave+24,0,4);
     }
-    for(int i=0;i<4;i++){char k[16];snprintf(k,sizeof(k),"f%d",groups[i].id);enable(&groups[i],number(json,k,0)!=0);}
+    // CharacterHandler's teleport path synchronizes physics itself. Legacy
+    // noclip hooks suppress parts of that path, so suspend them during flight.
+    for(int i=0;i<4;i++){char k[16];snprintf(k,sizeof(k),"f%d",groups[i].id);enable(&groups[i],groups[i].id==15?(legacy15_requested&&!flight_pending&&!flight_active):number(json,k,0)!=0);}
 }
 static void reset_teleport(void) {
     teleport_valid=0;teleport_frames=0;teleport_settle=0;
@@ -206,36 +239,106 @@ static int teleport_position(Group* g,uintptr_t transform,float position[4]) {
     if(!teleport_free&&!moving&&!loaded){teleport_y=teleport_target_y=position[1];return 0;}
     position[1]=(float)teleport_y;return 1;
 }
+static int write_position(REFrameworkMethodHandle method,uintptr_t transform,float position[4]) {
+    void* args[]={position};unsigned char out[136]={0};
+    return api->sdk->method->invoke(method,(void*)transform,args,sizeof(args),out,sizeof(out))==REFRAMEWORK_ERROR_NONE&&!out[128];
+}
+static int read_world(uintptr_t transform,float position[4]) {
+    unsigned char out[136]={0};
+    if(api->sdk->method->invoke(transform_get_world_position,(void*)transform,NULL,0,out,sizeof(out))!=REFRAMEWORK_ERROR_NONE||out[128])return 0;
+    memcpy(position,out,12);position[3]=0;
+    for(int i=0;i<3;i++)if(!isfinite(position[i])||fabsf(position[i])>100000)return 0;
+    return 1;
+}
+static int set_survivor_position(float world[4]) {
+    // RE2 SurvivorCondition.setPosition calls CharacterHandler.setPosition(...,
+    // true): set Transform, then warp registered controllers and refresh state.
+    // Use the game's typed entry point rather than treating its app controller
+    // wrapper as a via.physics.CharacterController instance.
+    if(!current_condition||!api->sdk->managed_object->is_managed_object(current_condition))return 0;
+    void* handler_field=field(current_condition,"<CharacterHandler>k__BackingField");
+    void* handler=handler_field?(void*)readptr((uintptr_t)handler_field):NULL;
+    if(!handler||!api->sdk->managed_object->is_managed_object(handler))return 0;
+    void* args[]={world};unsigned char out[136]={0};
+    return api->sdk->method->invoke(survivor_set_position,current_condition,args,sizeof(args),out,sizeof(out))==REFRAMEWORK_ERROR_NONE&&!out[128];
+}
+static int flight_tick(uintptr_t transform,const float local[4]) {
+    if(flight_saved&&flight_saved_transform!=transform)cancel_flight(1);
+    if(flight_active&&flight_transform!=transform){cancel_flight(1);return 0;}
+    if(flight_pending) {
+        int kind=flight_pending;flight_pending=0;
+        if(kind==2&&!flight_saved){flight_error="return point unavailable";return 0;}
+        flight_local=kind==2;flight_transform=transform;
+        if(flight_local){memcpy(flight_target,flight_return,16);memcpy(flight_start,local,16);}
+        else {
+            if(!read_world(transform,flight_start)){flight_error="world position getter failed";return 0;}
+            memcpy(flight_return,local,16);flight_saved=1;flight_saved_transform=transform;
+        }
+        flight_steps=flight_interpolate&&!flight_local?30:1;
+        flight_step=0;flight_settle=0;flight_active=1;reset_teleport();
+    }
+    if(!flight_active)return 0;
+    float position[4]={0};
+    if(flight_step<flight_steps)flight_step++;
+    float fraction=(float)flight_step/flight_steps;
+    for(int i=0;i<3;i++)position[i]=flight_step==flight_steps?flight_target[i]:flight_start[i]+(flight_target[i]-flight_start[i])*fraction;
+    float world[4];memcpy(world,position,16);
+    if(flight_local&&(!write_position(transform_set_position,transform,position)||!read_world(transform,world))) {
+        flight_error="return position conversion failed";cancel_flight(1);return -1;
+    }
+    if(!set_survivor_position(world)) {
+        flight_error="survivor teleport failed";cancel_flight(1);return -1;
+    }
+    float applied[4];
+    if(!read_world(transform,applied)||fabsf(applied[0]-world[0])>.005f||fabsf(applied[1]-world[1])>.005f||fabsf(applied[2]-world[2])>.005f) {
+        flight_error="survivor did not reach target";cancel_flight(1);return -1;
+    }
+    if(flight_local&&!write_position(transform_set_position,transform,position)) {
+        flight_error="return local position setter failed";cancel_flight(1);return -1;
+    }
+    if(flight_step==flight_steps){if(flight_local)flight_saved=0;flight_active=0;reset_teleport();}
+    return 1;
+}
 static void after_update(void) {
     Group* g=group(15);
-    if(g->ready&&g->enabled)capture_player();
-    if(!g->ready||!g->enabled||!*player_state||*event_state||!transform_set_position||!readable((void*)globals[2],0x60)) {
-        reset_teleport();return;
+    if(g->enabled||flight_pending||flight_active)capture_player();
+    if(flight_saved&&flight_saved_transform!=globals[2])cancel_flight(1);
+    if((!g->enabled&&!flight_pending&&!flight_active)||!*player_state||*event_state||!transform_set_position||!readable((void*)globals[2],0x60)) {
+        reset_teleport();
+        if(!g->ready||!*player_state||*event_state||!flight_enabled)cancel_flight(1);
+        else if(flight_active||flight_pending)cancel_flight(0);
+        if(!legacy15_requested)enable(g,0);
+        return;
     }
     float position[4];memcpy(position,(void*)(globals[2]+0x30),16);
+    int flight=flight_tick(globals[2],position);
+    if(flight) {
+        if(!flight_active)enable(g,legacy15_requested);
+        return;
+    }
+    if(!legacy15_requested){enable(g,0);reset_teleport();return;}
     if(!teleport_position(g,globals[2],position))return;
-    void* args[]={position};unsigned char out[136]={0};
-    REFrameworkResult result=api->sdk->method->invoke(transform_set_position,(void*)globals[2],args,sizeof(args),out,sizeof(out));
-    if(result!=REFRAMEWORK_ERROR_NONE||out[128]){g->error="native transform position setter failed";enable(g,0);g->ready=0;teleport_valid=0;}
+    if(!write_position(transform_set_position,globals[2],position)){g->error="native transform position setter failed";enable(g,0);g->ready=0;teleport_valid=0;}
 }
 static void write_status(void) {
     FILE* f=_wfopen(temporary_path,L"wb");if(!f)return;
-    fprintf(f,"{\"version\":4,\"player_ready\":%s,\"features\":{",*player_state?"true":"false");
+    fprintf(f,"{\"version\":5,\"player_ready\":%s,\"features\":{",*player_state?"true":"false");
     for(int i=0;i<4;i++)fprintf(f,"%s\"%d\":{\"ready\":%s,\"enabled\":%s,\"error\":\"%s\"}",i?",":"",groups[i].id,groups[i].ready?"true":"false",groups[i].enabled?"true":"false",groups[i].error?groups[i].error:"");
+    fprintf(f,",\"27\":{\"ready\":%s,\"enabled\":%s,\"error\":\"%s\"}",flight_ready()?"true":"false",flight_enabled?"true":"false",flight_error);
     Group* g=group(15);float p[3]={0};if(g->ready)memcpy(p,g->cave,12);
     for(int i=0;i<3;i++)if(!isfinite(p[i]))p[i]=0;
     float current_position[3]={0};
     if(*player_state&&readable((void*)globals[2],0x40))memcpy(current_position,(void*)(globals[2]+0x30),12);
     for(int i=0;i<3;i++)if(!isfinite(current_position[i]))current_position[i]=0;
-    fprintf(f,"},\"saved_valid\":%s,\"load_settle_frames\":%d,\"saved\":[%.9g,%.9g,%.9g],\"position\":[%.9g,%.9g,%.9g]}",teleport_saved?"true":"false",teleport_settle,p[0],p[1],p[2],current_position[0],current_position[1],current_position[2]);fclose(f);
+    fprintf(f,"},\"flight\":{\"backend\":\"SurvivorCondition.setPosition\",\"sequence\":%u,\"active\":%s,\"saved_valid\":%s},\"saved_valid\":%s,\"load_settle_frames\":%d,\"saved\":[%.9g,%.9g,%.9g],\"position\":[%.9g,%.9g,%.9g]}",flight_sequence,flight_active?"true":"false",flight_saved?"true":"false",teleport_saved?"true":"false",teleport_settle,p[0],p[1],p[2],current_position[0],current_position[1],current_position[2]);fclose(f);
     MoveFileExW(temporary_path,status_path,MOVEFILE_REPLACE_EXISTING);
 }
 static void on_update(void) {
     capture_player();ULONGLONG now=GetTickCount64();
     // Poll action counters each scene update while teleport is enabled, so a
     // save press does not capture a position up to 100 ms later while walking.
-    if(group(15)->enabled||now-last_poll>=100){last_poll=now;poll_config();}
-    if(now-last_status>=1000){last_status=now;write_status();}
+    if(group(15)->enabled||flight_pending||flight_active||now-last_poll>=100){last_poll=now;poll_config();}
+    if(now-last_status>=(flight_active||flight_pending?100:1000)){last_status=now;write_status();}
 }
 __declspec(dllexport) void reframework_plugin_required_version(REFrameworkPluginVersion* version) {
     version->major=REFRAMEWORK_PLUGIN_VERSION_MAJOR;version->minor=REFRAMEWORK_PLUGIN_VERSION_MINOR;version->patch=REFRAMEWORK_PLUGIN_VERSION_PATCH;version->game_name="RE2";
@@ -268,10 +371,13 @@ __declspec(dllexport) bool reframework_plugin_initialize(const REFrameworkPlugin
     player_state=(uint64_t*)(globals+8);event_state=(uint64_t*)(globals+9);globals[0]=(uintptr_t)player_state;globals[4]=(uintptr_t)event_state;
     MH_STATUS init=MH_Initialize();if(init!=MH_OK&&init!=MH_ERROR_ALREADY_INITIALIZED)return false;
     for(int i=0;i<4;i++)prepare(&groups[i]);
-    if(group(15)->ready) {
+    if(api->sdk->tdb&&api->sdk->method&&api->sdk->functions->get_tdb) {
         // The legacy movement sites operate on Transform's local position.
         // Use the matching setter so parent transforms do not shift world coordinates.
         transform_set_position=api->sdk->tdb->find_method(api->sdk->functions->get_tdb(),"via.Transform","set_LocalPosition");
+        transform_get_world_position=api->sdk->tdb->find_method(api->sdk->functions->get_tdb(),"via.Transform","get_Position");
+        survivor_set_position=api->sdk->tdb->find_method(api->sdk->functions->get_tdb(),"app.ropeway.survivor.SurvivorCondition","setPosition");
+        if(survivor_set_position&&(!api->sdk->method->get_num_params||api->sdk->method->get_num_params(survivor_set_position)!=1))survivor_set_position=NULL;
         if(!transform_set_position){group(15)->ready=0;group(15)->error="native transform position setter missing";}
     }
     api->functions->log_info("[RE2 Legacy] Native helper loaded; all four feature groups initially disabled");
